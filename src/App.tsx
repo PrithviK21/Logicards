@@ -1,16 +1,16 @@
-import { useContext, useState } from 'react';
-import './App.css';
-import Game from './components/Game/Game';
-import Menu from './components/Menu/Menu';
-import Win from './components/WinLoss/Win';
-import Loss from './components/WinLoss/Loss';
-import { ScoreContext } from './components/context/ScoreContext';
+import { useContext, useState } from "react";
+import "./App.css";
+import Game from "./components/Game/Game";
+import Menu from "./components/Menu/Menu";
+import Win from "./components/WinLoss/Win";
+import Loss from "./components/WinLoss/Loss";
+import { ScoreContext } from "./components/context/ScoreContext";
 
 const GAME_STATES = {
-  MENU: 'menu',
-  GAME: 'game',
-  WIN: 'win',
-  LOSS: 'loss',
+  MENU: "menu",
+  GAME: "game",
+  WIN: "win",
+  LOSS: "loss",
 };
 
 /**
@@ -27,12 +27,12 @@ const GAME_STATES = {
  */
 
 function App() {
-  const [gameState, setGameState] = useState(GAME_STATES.GAME);
+  const [gameState, setGameState] = useState(GAME_STATES.MENU);
   const scoreContext = useContext(ScoreContext);
 
   // Add null check for type safety
   if (!scoreContext) {
-    throw new Error('Game must be used within a ScoreProvider');
+    throw new Error("Game must be used within a ScoreProvider");
   }
 
   const { reset } = scoreContext;
@@ -46,7 +46,12 @@ function App() {
     return <Menu onPlay={() => setGameState(GAME_STATES.GAME)} />;
   }
   if (gameState === GAME_STATES.GAME) {
-    return <Game onWin={() => setGameState(GAME_STATES.WIN)} onLoss={() => setGameState(GAME_STATES.LOSS)} />;
+    return (
+      <Game
+        onWin={() => setGameState(GAME_STATES.WIN)}
+        onLoss={() => setGameState(GAME_STATES.LOSS)}
+      />
+    );
   }
   if (gameState === GAME_STATES.WIN) {
     return <Win returnToMenu={returnToMenu} />;
