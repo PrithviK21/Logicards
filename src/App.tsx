@@ -5,9 +5,11 @@ import Menu from "./components/Menu/Menu";
 import Win from "./components/WinLoss/Win";
 import Loss from "./components/WinLoss/Loss";
 import { ScoreContext } from "./components/context/ScoreContext";
+import Rules from "./components/Rules/Rules";
 
 const GAME_STATES = {
   MENU: "menu",
+  RULES: "rules",
   GAME: "game",
   WIN: "win",
   LOSS: "loss",
@@ -43,15 +45,24 @@ function App() {
   };
 
   if (gameState === GAME_STATES.MENU) {
-    return <Menu onPlay={() => setGameState(GAME_STATES.GAME)} />;
+    return (
+      <Menu
+        onPlay={() => setGameState(GAME_STATES.GAME)}
+        onRules={() => setGameState(GAME_STATES.RULES)}
+      />
+    );
   }
   if (gameState === GAME_STATES.GAME) {
     return (
       <Game
         onWin={() => setGameState(GAME_STATES.WIN)}
         onLoss={() => setGameState(GAME_STATES.LOSS)}
+        returnToMenu={() => setGameState(GAME_STATES.MENU)}
       />
     );
+  }
+  if (gameState === GAME_STATES.RULES) {
+    return <Rules returnToMenu={returnToMenu} />;
   }
   if (gameState === GAME_STATES.WIN) {
     return <Win returnToMenu={returnToMenu} />;

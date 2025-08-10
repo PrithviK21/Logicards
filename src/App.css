@@ -10,7 +10,9 @@
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
-
+#root {
+  width: 100%;
+}
 a {
   font-weight: 500;
   color: #646cff;
@@ -60,6 +62,7 @@ button:focus-visible {
   align-items: center;
   justify-content: center;
   flex-direction: column;
+  gap: 1rem;
 }
 
 .game {
@@ -78,7 +81,7 @@ button:focus-visible {
   /* grid-template-columns: repeat(3, 1fr); */
   grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
   /* grid-template-rows: repeat(3, 30vh); */
-  gap: 0.5rem;
+  gap: 1rem;
 }
 
 .card {
@@ -105,8 +108,17 @@ button:focus-visible {
   box-shadow: 2px 3px 11px 0px grey;
 }
 
-.card.flipped {
-  font-size: 3rem;
+.card.read-only {
+  height: min-content;
+  cursor: default;
+  aspect-ratio: inherit;
+  border: none;
+}
+.card.read-only img {
+  width: 75%;
+  height: auto;
+  border: 1px solid green;
+  border-radius: 8px;
 }
 
 .card.can-select {
@@ -175,10 +187,47 @@ button:focus-visible {
   display: flex;
   flex-direction: column;
   height: 100%;
-  justify-content: space-around;
+  align-items: center;
 }
+.info > h2 {
+  padding: 1rem;
+  border-radius: 8px;
+  background-color: #2f4d68;
+  color: white;
+}
+
 .info h3 {
   padding: 1rem;
   border-radius: 8px;
   background-color: #fbf6f6;
+}
+.active-card-info {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.active-card-info > span {
+  font-weight: bold;
+  margin-bottom: 0.5rem;
+}
+
+.rules {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+}
+
+.rules img {
+  object-fit: cover;
+  width: 100%;
+}
+
+.rules-header {
+  position: fixed;
+  background-color: rgb(169, 179, 255);
+  margin: 1rem;
 }

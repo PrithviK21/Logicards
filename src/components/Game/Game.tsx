@@ -4,6 +4,7 @@ import type { GameProps, GameState, ICard } from "../../types";
 import { generateInitialBoard } from "./Game.utils";
 import { cardEffects } from "./cardEffects";
 import { ScoreContext } from "../context/ScoreContext";
+import ReadOnlyCard from "./Card/ReadOnlyCard";
 
 /**
  * CARD FUNCTIONS:
@@ -18,7 +19,7 @@ import { ScoreContext } from "../context/ScoreContext";
  * 9. Flip any one corner card
  */
 
-function Game({ onWin, onLoss }: GameProps) {
+function Game({ onWin, onLoss, returnToMenu }: GameProps) {
   const scoreContext = useContext(ScoreContext);
 
   // Add null check for type safety
@@ -113,6 +114,14 @@ function Game({ onWin, onLoss }: GameProps) {
       <div className="">
         <h1>Logicards</h1>
         <button onClick={resetGame}>Reset</button>
+        <button
+          onClick={() => {
+            resetGame();
+            returnToMenu();
+          }}
+        >
+          Return to Menu
+        </button>
       </div>
       <div className="play-area">
         <div className="card-container">
@@ -135,13 +144,8 @@ function Game({ onWin, onLoss }: GameProps) {
         </div>
         <div className="button-container">
           <span>Active Card: {gameState.activeCard}</span>
-          <button
-            onClick={executeActiveCard}
-            disabled={gameState.gamePhase === "selecting"}
-          >
-            Play
-          </button>
-          {gameState.gamePhase === "selecting" && (
+
+          {gameState.gamePhase === "selecting" ? (
             <>
               <button
                 onClick={submitSelectedCards}
@@ -150,19 +154,24 @@ function Game({ onWin, onLoss }: GameProps) {
                   gameState.pendingEffect?.maxSelectionCount
                 }
               >
-                {gameState.pendingEffect?.step === "swap"
-                  ? "Swap"
-                  : gameState.pendingEffect?.step === "flip"
-                  ? "Flip"
-                  : "Select"}
+                {gameState.pendingEffect?.step === "swap" ? "Swap" : "Flip"}
               </button>
             </>
+          ) : (
+            <button className="play-btn" onClick={executeActiveCard}>
+              Play
+            </button>
           )}
         </div>
       </div>
-      {/* <Card  /> */}
       <div className="info">
         <h2>Number of turns: {numberOfTurns}</h2>
+        {gameState.activeCard >= 0 && (
+          <div className="active-card-info">
+            <span>Active Card</span>
+            <ReadOnlyCard value={gameState.activeCard} />
+          </div>
+        )}
         {gameState.gamePhase === "selecting" && (
           <>
             <h3>

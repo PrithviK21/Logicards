@@ -30,6 +30,7 @@ interface GameStateUpdate {
 export type GameProps = {
   onWin: () => void;
   onLoss: () => void;
+  returnToMenu: () => void;
 };
 
 export type WinLossProps = {

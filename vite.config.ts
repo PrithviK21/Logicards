@@ -5,7 +5,7 @@ import react from "@vitejs/plugin-react";
 export default defineConfig({
   plugins: [react()],
   base: "/Logicards/",
-  build: {
-    assetsInlineLimit: Infinity, // inline ALL assets, no matter size
-  },
+  // build: {
+  //   assetsInlineLimit: Infinity, // inline ALL assets, no matter size
+  // },
 });
