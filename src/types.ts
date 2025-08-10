@@ -1,17 +1,17 @@
 export type ICard = {
   value: number;
-  isFlipped: boolean;
+  isFaceUp: boolean;
   isSelected?: boolean;
 };
 export type GameState = {
   cards: ICard[];
   activeCard: number;
-  gamePhase: 'waiting' | 'selecting' | 'animating';
+  gamePhase: "waiting" | "selecting" | "animating";
   pendingEffect?: PendingEffect;
 };
 
 interface PendingEffect {
-  step?: 'swap' | 'flip' | 'select';
+  step?: "swap" | "flip" | "select";
   requiresSelection: boolean;
   maxSelectionCount: number;
   selectablePositions: number[];
@@ -21,7 +21,7 @@ interface PendingEffect {
 interface GameStateUpdate {
   cards: ICard[];
   activeCard: number;
-  gamePhase?: 'waiting' | 'selecting';
+  gamePhase?: "waiting" | "selecting";
   pendingEffect?: PendingEffect;
 }
 

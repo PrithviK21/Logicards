@@ -1,4 +1,4 @@
-import type { ICard } from '../../types';
+import type { ICard } from "../../types";
 
 const getOrthogonallyAdjacent = (position: number): number[] => {
   const row = Math.floor(position / 3);
@@ -38,7 +38,7 @@ const getCardValuesAsString = (positions: number[], cards: ICard[]) => {
   positions.forEach((pos) => {
     cardValues.push(cards[pos].value);
   });
-  return cardValues.join(', ');
+  return cardValues.join(", ");
 };
 
 const shuffle = (originalCards: ICard[]) => {
@@ -57,16 +57,20 @@ const generateInitialBoard = () => {
   for (let i = 1; i < 10; i++) {
     cards.push({
       value: i,
-      isFlipped: false,
+      isFaceUp: false,
     });
   }
   cards = shuffle(cards);
   const randomActive = Math.floor(Math.random() * 9);
-  cards[randomActive].isFlipped = true;
+  cards[randomActive].isFaceUp = true;
   return { cards: cards, activeCard: cards[randomActive].value };
 };
 
-const findActiveCard = (cards: ICard[], activeCard: number, newCards: ICard[] = []) => {
+const findActiveCard = (
+  cards: ICard[],
+  activeCard: number,
+  newCards: ICard[] = []
+) => {
   if (newCards.length > 0) {
     let maxCard = { value: 0 };
     newCards.forEach((card) => {
@@ -78,31 +82,41 @@ const findActiveCard = (cards: ICard[], activeCard: number, newCards: ICard[] = 
   } else {
     let closestHigherCard = 10;
     cards.forEach((card) => {
-      if (!card.isFlipped) return;
+      if (!card.isFaceUp) return;
       const currDiff = card.value - activeCard;
-      if (currDiff > 0 && currDiff < closestHigherCard - activeCard) closestHigherCard = card.value;
+      if (currDiff > 0 && currDiff < closestHigherCard - activeCard)
+        closestHigherCard = card.value;
     });
     if (closestHigherCard !== 10) return closestHigherCard;
 
     let closestLowerCard = 0;
     cards.forEach((card) => {
-      if (!card.isFlipped) return;
+      if (!card.isFaceUp) return;
       const currDiff = activeCard - card.value;
-      if (currDiff > 0 && currDiff < activeCard - closestLowerCard) closestLowerCard = card.value;
+      if (currDiff > 0 && currDiff < activeCard - closestLowerCard)
+        closestLowerCard = card.value;
     });
     if (closestLowerCard !== 0) return closestLowerCard;
     return activeCard;
   }
 };
 
-const flipCardsAndGetActive = (selectedCardPositions: number[], currentActiveValue: number, cards: ICard[]) => {
+const flipCardsAndGetActive = (
+  selectedCardPositions: number[],
+  currentActiveValue: number,
+  cards: ICard[]
+) => {
   const newCards = [...cards];
   const flippedCards: ICard[] = [];
   selectedCardPositions.forEach((cardPos) => {
-    newCards[cardPos].isFlipped = !newCards[cardPos].isFlipped;
-    if (newCards[cardPos].isFlipped) flippedCards.push(newCards[cardPos]);
+    newCards[cardPos].isFaceUp = !newCards[cardPos].isFaceUp;
+    if (newCards[cardPos].isFaceUp) flippedCards.push(newCards[cardPos]);
   });
-  const newActiveCard = findActiveCard(newCards, currentActiveValue, flippedCards);
+  const newActiveCard = findActiveCard(
+    newCards,
+    currentActiveValue,
+    flippedCards
+  );
   return { cards: newCards, activeCard: newActiveCard };
 };
 

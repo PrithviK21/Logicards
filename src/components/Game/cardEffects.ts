@@ -1,12 +1,12 @@
-import { CROSS_CARD_POSITIONS } from '../../constants';
-import type { GameState, ICard } from '../../types';
+import { CROSS_CARD_POSITIONS } from "../../constants";
+import type { GameState, ICard } from "../../types";
 import {
   getOrthogonallyAdjacent,
   findActiveCard,
   getDiagonallyAdjacent,
   flipCardsAndGetActive,
   shuffle,
-} from './Game.utils';
+} from "./Game.utils";
 
 export const cardEffects: {
   1: (state: GameState) => GameState;
@@ -20,15 +20,17 @@ export const cardEffects: {
   9: (state: GameState) => GameState;
 } = {
   1: (state: GameState) => {
-    const activePos = state.cards.findIndex((card) => card.value === state.activeCard);
+    const activePos = state.cards.findIndex(
+      (card) => card.value === state.activeCard
+    );
     const newCards = [...state.cards];
 
     const adjacentPositions = getOrthogonallyAdjacent(activePos);
     const flippedCards: ICard[] = [];
     adjacentPositions.forEach((pos) => {
       if (pos >= 0 && pos < 9) {
-        newCards[pos].isFlipped = !newCards[pos].isFlipped;
-        if (newCards[pos].isFlipped) {
+        newCards[pos].isFaceUp = !newCards[pos].isFaceUp;
+        if (newCards[pos].isFaceUp) {
           flippedCards.push(newCards[pos]);
         }
       }
@@ -38,7 +40,7 @@ export const cardEffects: {
       ...state,
       cards: newCards,
       activeCard: newActiveCard,
-      gamePhase: 'waiting' as const,
+      gamePhase: "waiting" as const,
     };
   },
   2: (state: GameState) => {
@@ -47,7 +49,7 @@ export const cardEffects: {
     //TODO: User should now be able to select 2 from diagonal pos, and then flip them
     return {
       ...state,
-      gamePhase: 'selecting' as const,
+      gamePhase: "selecting" as const,
       pendingEffect: {
         fn: (selectedCardPositions: number[]) => {
           return flipCardsAndGetActive(selectedCardPositions, 2, state.cards);
@@ -63,7 +65,7 @@ export const cardEffects: {
     return {
       ...state,
       cards: newCards,
-      gamePhase: 'selecting' as const,
+      gamePhase: "selecting" as const,
       pendingEffect: {
         fn: (selectedCardPositions: number[]) => {
           return flipCardsAndGetActive(selectedCardPositions, 3, newCards);
@@ -78,17 +80,21 @@ export const cardEffects: {
     const newCards = [...state.cards];
     const flippedCards: ICard[] = [];
     CROSS_CARD_POSITIONS.forEach((pos) => {
-      newCards[pos].isFlipped = !newCards[pos].isFlipped;
-      if (newCards[pos].isFlipped) {
+      newCards[pos].isFaceUp = !newCards[pos].isFaceUp;
+      if (newCards[pos].isFaceUp) {
         flippedCards.push(newCards[pos]);
       }
     });
-    const newActiveCard = findActiveCard(newCards, state.activeCard, flippedCards);
+    const newActiveCard = findActiveCard(
+      newCards,
+      state.activeCard,
+      flippedCards
+    );
     return {
       ...state,
       cards: newCards,
       activeCard: newActiveCard,
-      gamePhase: 'waiting' as const,
+      gamePhase: "waiting" as const,
     };
   },
   5: (state: GameState) => {
@@ -96,7 +102,7 @@ export const cardEffects: {
     return {
       ...state,
       cards: newCards,
-      gamePhase: 'selecting' as const,
+      gamePhase: "selecting" as const,
       pendingEffect: {
         fn: (selectedCardPositions: number[]) => {
           return flipCardsAndGetActive(selectedCardPositions, 5, newCards);
@@ -109,11 +115,13 @@ export const cardEffects: {
   },
   6: (state: GameState) => {
     const newCards = [...state.cards];
-    const activePos = newCards.findIndex((card) => card.value === state.activeCard);
+    const activePos = newCards.findIndex(
+      (card) => card.value === state.activeCard
+    );
     return {
       ...state,
       cards: newCards,
-      gamePhase: 'selecting' as const,
+      gamePhase: "selecting" as const,
       pendingEffect: {
         fn: (selectedCardPositions: number[]) => {
           const posToSwapWith = selectedCardPositions[0];
@@ -123,25 +131,31 @@ export const cardEffects: {
           return {
             ...state,
             cards: newCards,
-            gamePhase: 'selecting' as const,
+            gamePhase: "selecting" as const,
             pendingEffect: {
               fn: (selectedCardPositions: number[]) => {
-                return flipCardsAndGetActive(selectedCardPositions, 6, newCards);
+                return flipCardsAndGetActive(
+                  selectedCardPositions,
+                  6,
+                  newCards
+                );
               },
               requiresSelection: true,
               maxSelectionCount: 1,
               selectablePositions: [0, 1, 2, 3, 4, 5, 6, 7, 8].filter(
                 (pos) => ![activePos, posToSwapWith].includes(pos)
               ), // all positions except own
-              step: 'flip',
+              step: "flip",
             },
           };
           // return flipCardsAndGetActive(selectedCardPositions,6,newCards)
         },
         requiresSelection: true,
         maxSelectionCount: 1,
-        selectablePositions: [0, 1, 2, 3, 4, 5, 6, 7, 8].filter((pos) => pos != activePos), // all positions except own
-        step: 'swap',
+        selectablePositions: [0, 1, 2, 3, 4, 5, 6, 7, 8].filter(
+          (pos) => pos != activePos
+        ), // all positions except own
+        step: "swap",
       },
     };
   },
@@ -154,7 +168,7 @@ export const cardEffects: {
     return {
       ...state,
       cards: newCards,
-      gamePhase: 'selecting' as const,
+      gamePhase: "selecting" as const,
       pendingEffect: {
         fn: (selectedCardPositions: number[]) => {
           return flipCardsAndGetActive(selectedCardPositions, 7, newCards);
@@ -174,7 +188,7 @@ export const cardEffects: {
     return {
       ...state,
       cards: newCards,
-      gamePhase: 'selecting' as const,
+      gamePhase: "selecting" as const,
       pendingEffect: {
         fn: (selectedCardPositions: number[]) => {
           return flipCardsAndGetActive(selectedCardPositions, 8, newCards);
@@ -192,7 +206,7 @@ export const cardEffects: {
     return {
       ...state,
       cards: newCards,
-      gamePhase: 'selecting' as const,
+      gamePhase: "selecting" as const,
       pendingEffect: {
         fn: (selectedCardPositions: number[]) => {
           return flipCardsAndGetActive(selectedCardPositions, 9, newCards);
