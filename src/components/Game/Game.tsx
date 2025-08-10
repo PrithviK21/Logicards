@@ -111,17 +111,19 @@ function Game({ onWin, onLoss, returnToMenu }: GameProps) {
 
   return (
     <div className="game">
-      <div className="">
+      <div className="game-header">
         <h1>Logicards</h1>
-        <button onClick={resetGame}>Reset</button>
-        <button
-          onClick={() => {
-            resetGame();
-            returnToMenu();
-          }}
-        >
-          Return to Menu
-        </button>
+        <div className="header-btn-container">
+          <button onClick={resetGame}>Reset</button>
+          <button
+            onClick={() => {
+              resetGame();
+              returnToMenu();
+            }}
+          >
+            Menu
+          </button>
+        </div>
       </div>
       <div className="play-area">
         <div className="card-container">
@@ -200,7 +202,7 @@ const MiniMap = ({
   allowedPositions: number[];
 }) => {
   return (
-    <div>
+    <div className="minimap-container">
       <span>The following cards can be selected</span>
       <div className="minimap">
         {cards.map((card, index) => {
