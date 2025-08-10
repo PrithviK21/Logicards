@@ -4,7 +4,7 @@ function Rules({ returnToMenu }: { returnToMenu: () => void }) {
   return (
     <>
       <button className="rules-header" onClick={returnToMenu}>
-        Return To Menu
+        Menu
       </button>
       <div className="rules">
         <img src={pg1} alt="Rules page 1" />

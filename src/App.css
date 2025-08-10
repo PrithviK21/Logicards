@@ -240,6 +240,7 @@ button:focus-visible {
   position: fixed;
   background-color: rgb(169, 179, 255);
   margin: 1rem;
+  border: 1px solid black;
 }
 .game-header .header-btn-container {
   display: flex;
@@ -251,6 +252,10 @@ button:focus-visible {
 /* MEDIA QUERIES */
 
 @media screen and (max-width: 768px) {
+  .rules {
+    flex-direction: column;
+  }
+
   .game {
     grid-template-columns: 1fr;
     grid-template-rows: auto auto auto;
